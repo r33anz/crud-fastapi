@@ -1,7 +1,7 @@
 # src/routes.py
 from fastapi import APIRouter
-from src.controller import get_all_tasks, create_new_task, update_existing_task, delete_task_by_id
-from src.model import Task
+from src.controllers.controller import get_all_tasks, create_new_task, update_existing_task, delete_task_by_id
+from src.models.model import Task
 from typing import List
 
 router = APIRouter()

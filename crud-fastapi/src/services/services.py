@@ -1,5 +1,5 @@
 import csv
-from src.model import Task
+from src.models.model import Task
 from typing import List
 import os
 

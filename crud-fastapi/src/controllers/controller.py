@@ -1,6 +1,6 @@
 from fastapi import HTTPException
-from src.model import Task
-from src.services import get_tasks, create_task, update_task, delete_task
+from src.models.model import Task
+from src.services.services import get_tasks, create_task, update_task, delete_task
 from typing import List
 
 def get_all_tasks() -> List[Task]:
