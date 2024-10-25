@@ -1,25 +1,31 @@
-from fastapi import HTTPException
-from src.models.model import Task
-from src.services.services import get_tasks, create_task, update_task, delete_task
+from fastapi import APIRouter, HTTPException
 from typing import List
+#from src.models.modelsSQL.modelSQL import Task
+from src.models.modelFinal import Task
+from src.services.services import TaskService
 
-def get_all_tasks() -> List[Task]:
-    return get_tasks()
 
-def create_new_task(task: Task):
-    create_task(task)
-    return {"message": "Task created successfully"}
+class TaskController:
+    def __init__(self, service: TaskService):
+        self.service = service
 
-def update_existing_task(task_id: int, task: Task):
-    tasks = get_tasks()
-    if not any(t.id == task_id for t in tasks):
-        raise HTTPException(status_code=404, detail="Task not found")
-    update_task(task_id, task)
-    return {"message": "Task updated successfully"}
+    def get_all_tasks(self) -> List[Task]:
+        return self.service.get_all_tasks()
 
-def delete_task_by_id(task_id: int):
-    tasks = get_tasks()
-    if not any(t.id == task_id for t in tasks):
-        raise HTTPException(status_code=404, detail="Task not found")
-    delete_task(task_id)
-    return {"message": "Task deleted successfully"}
+    def create_task(self, task: Task):
+        self.service.create_task(task)
+        return {"message": "Task created successfully"}
+
+    def update_task(self, task_id: int, task: Task):
+        tasks = self.service.get_all_tasks()
+        if not any(t.id == task_id for t in tasks):
+            raise HTTPException(status_code=404, detail="Task not found")
+        self.service.update_task(task_id, task)
+        return {"message": "Task updated successfully"}
+
+    def delete_task(self, task_id: int):
+        tasks = self.service.get_all_tasks()
+        if not any(t.id == task_id for t in tasks):
+            raise HTTPException(status_code=404, detail="Task not found")
+        self.service.delete_task(task_id)
+        return {"message": "Task deleted successfully"}
