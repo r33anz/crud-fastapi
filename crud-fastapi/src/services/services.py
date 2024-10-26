@@ -7,7 +7,7 @@ class TaskService:
     def __init__(self,task_repository = TaskRepositoryInterface):
         self.repo = task_repository
 
-    def get_task(self,task_id: int) -> Task:
+    def get_task(self,task_id: str) -> Task:
         return self.repo.get_task(task_id)
 
     def get_all_tasks(self) -> List[Task]:
@@ -16,8 +16,8 @@ class TaskService:
     def create_task(self,task: Task) -> None:
         return self.repo.create_task(task)
     
-    def update_task(self,task_id: int, task: Task) -> None:
+    def update_task(self,task_id: str, task: Task) -> None:
         return self.repo.update_task(task_id,task)
        
-    def delete_task(self,task_id: int) -> None:
+    def delete_task(self,task_id: str) -> None:
         return self.repo.delete_task(task_id)

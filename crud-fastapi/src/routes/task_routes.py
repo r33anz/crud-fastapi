@@ -20,11 +20,11 @@ def create_task(task: Task, task_service: TaskService = Depends(get_task_service
     return task_controller.create_task(task)
 
 @router.put("/tasks/{task_id}")
-def update_task(task_id: int, task: Task, task_service: TaskService = Depends(get_task_service)):
+def update_task(task_id: str, task: Task, task_service: TaskService = Depends(get_task_service)):
     task_controller = TaskController(task_service)
     return task_controller.update_task(task_id, task)
 
 @router.delete("/tasks/{task_id}")
-def delete_task(task_id: int, task_service: TaskService = Depends(get_task_service)):
+def delete_task(task_id: str, task_service: TaskService = Depends(get_task_service)):
     task_controller = TaskController(task_service)
     return task_controller.delete_task(task_id)

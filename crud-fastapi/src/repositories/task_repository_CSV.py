@@ -2,8 +2,7 @@ from src.interfaces.task_repository_interface import TaskRepositoryInterface
 from typing import List
 from src.models.modelFinal import Task
 import csv
-import uuid
-
+from uuid import UUID
 class TaskRespositoryCSV(TaskRepositoryInterface):
 
     def __init__(self,filename : str):
@@ -26,7 +25,9 @@ class TaskRespositoryCSV(TaskRepositoryInterface):
         with open(self.filename , mode='r') as file:
             reader = csv.DictReader(file)
             for row in reader:
+                print(Task(**row))
                 tasks.append(Task(**row))
+
         return tasks
 
     
@@ -43,25 +44,27 @@ class TaskRespositoryCSV(TaskRepositoryInterface):
             data_to_write = task.model_dump(include={'id', 'title', 'task', 'completed'})
             writer.writerow(data_to_write)
         
-    def update_task(self,task_id: int, task: Task) -> None:
+    def update_task(self,task_id: str, task: Task) -> None:
         tasks = self.get_all_tasks()
         updated_tasks = []
 
         for t in tasks:
-            if t.id == task_id:
+            print(type(t.id))
+            if t.id == UUID(task_id):
+                task.id = t.id
                 updated_tasks.append(task)
             else:
                 updated_tasks.append(t)
 
         with open(self.filename, mode='w', newline='') as file:
-            writer = csv.DictWriter(file, fieldnames=['id', 'title', 'description', 'completed'])
+            writer = csv.DictWriter(file, fieldnames=['id', 'title', 'task', 'completed'])
             writer.writeheader()
             for task in updated_tasks:
                 writer.writerow(task.model_dump())
     
-    def delete_task(self, task_id: int) -> None:
+    def delete_task(self, task_id: str) -> None:
         tasks = self.get_all_tasks()
-        updated_tasks = [t for t in tasks if t.id != task_id]
+        updated_tasks = [t for t in tasks if t.id != UUID(task_id)]
 
         with open(self.filename, mode='w', newline='') as file:
             writer = csv.DictWriter(file, fieldnames=['id', 'title', 'task', 'completed'])
